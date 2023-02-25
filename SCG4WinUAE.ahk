@@ -1,4 +1,4 @@
-﻿;@Ahk2Exe-SetMainIcon Boing.ico
+;@Ahk2Exe-SetMainIcon Boing.ico
 ;@Ahk2Exe-SetDescription Swift Configuration Generator for WinUAE
 ;@Ahk2Exe-SetProductName SCG4WinUAE
 ;@Ahk2Exe-SetVersion 1.3.5
@@ -8,7 +8,7 @@
 FileInstall, SCG4WinUAE.txt, SCG4WinUAE.txt, 1
 */
 
-#NoEnv
+;#NoEnv
 #NoTrayIcon
 #SingleInstance Ignore
 SetWorkingDir %A_ScriptFullPath%
@@ -140,26 +140,26 @@ Else {
 Gui, Add, GroupBox, h155 w205 yp+27 xm+0, Optional:
 Gui, Add, Button, xs w150 xp+17 yp+20 gLoadKS vBKS
 BKS_TT := "Add a Kickstart ROM to your system, otherwise`nthe AROS Kickstart ROM will be used instead."
-Gui, Add, Button, x+5 gEjectKS vEjKS, 
+Gui, Add, Button, x+5 gEjectKS vEjKS,
 EjKS_TT := "Remove Kickstart ROM Image"
 Gui, Add, Button, w150 xs+17 yp+34 gLoadFD vBFD
 BFD_TT := "Add any number of Floppy disk Images by`nhighlighting them in the selection window.`n`nIn WinUAE go to 'Disk Swapper'`nto manage the Images in the drives."
-Gui, Add, Button, x+5 gEjectFD vEjFD, 
+Gui, Add, Button, x+5 gEjectFD vEjFD,
 EjFD_TT := "Eject Floppy Disk Image/s"
 Gui, Add, Button, w150 xs+17 yp+34 gLoadHD vBHD
 BHD_TT := "Add any number of Hard disk Images by`nhighlighting them in the selection window."
-Gui, Add, Button, x+5 gEjectHD vEjHD, 
+Gui, Add, Button, x+5 gEjectHD vEjHD,
 EjHD_TT := "Eject Hard Disk Image/s"
 Gui, Add, Button, w150 xs+17 yp+34 gLoadCD vBCD
 BCD_TT := "Add a Compact disk Image to your`nAROS, CDTV or CD32 system."
-Gui, Add, Button, x+5 gEjectCD vEjCD, 
+Gui, Add, Button, x+5 gEjectCD vEjCD,
 EjCD_TT := "Eject Compact Disk Image"
 Gui, Add, Button, w120 xs+43 yp+40 gGenerate vBGen, Generate
 BGen_TT =
 Gui, Add, Checkbox, yp+27 vRun, Open with WinUAE
 Run_TT := "Enable this to run your generated configuration on WinUAE.`n`nLeaving this Disabled means the file will be saved in`nthe 'configuration' folder for later use.`n`nPress 'F12' during emulation to open the WinUAE options."
 OnMessage(0x0200, "WM_MOUSEMOVE")
-Gui, Show, w226 h345 Center, SCG4WinUAE 1.3.34.5
+Gui, Show, w226 h345 Center, SCG4WinUAE 1.3.5
 Settimer, GUI
 Return
 
@@ -449,7 +449,7 @@ Gui, Guru:Font, s8 Bold, Verdana
 Gui, Guru:Add, Button, xm+70 vMeh gMeh, Donkey!
 Meh :=
 Gui, Guru:Show, w226, Guru
-WinGetPos, PX, PY,,, SCG4WinUAE 1.3.34.5
+WinGetPos, PX, PY,,, SCG4WinUAE 1.3.5
 Winmove, Guru,, PX, PY+(220*A_ScreenDPI/96)
 Return
 
@@ -469,7 +469,7 @@ Gui, Ext:Font, s8 Bold, Verdana
 Gui, Ext:Add, Button, w40 gYes xm+55, Yeah
 Gui, Ext:Add, Button, w40 xp+50 gNo, Nope
 Gui, Ext:Show, w226, Extend
-WinGetPos, PX, PY,,, SCG4WinUAE 1.3.34.5
+WinGetPos, PX, PY,,, SCG4WinUAE 1.3.5
 Winmove, Extend,, PX, PY+(220*A_ScreenDPI/96)
 Return
 
@@ -519,7 +519,7 @@ If (Fdisks != "") {
 	}
 }
 Else {
-	FD = 
+	FD =
 }
 }
 Return
@@ -554,7 +554,7 @@ If (Hdisks != "") {
 	}
 }
 Else {
-	HD = 
+	HD =
 }
 }
 Return
@@ -576,7 +576,7 @@ If (CDisk != "") {
 	Gui, -Disabled
 }
 Else {
-	CD = 
+	CD =
 }
 }
 Return
@@ -631,7 +631,7 @@ Gui, Font, s8, Verdana
 Gui, +Disabled
 Gui, About:Add, Text,, Disabled:`nNo Joystick Attached`n`nEnabled (One Player) -`nArrow keys, WINkey (Autofire)`n`nStandard:`nLeft or Right Ctrl (Primary Fire)`nLeft or Right Alt (Secondary Fire)`n`nCDTV/CD32:`nZ (Red/Primary Fire), A (Green)`nX (Blue/Secondary Fire), S (Yellow)`n`nTwo Player:`nPlayer One - WSAD`nLeft Ctrl (Primary Fire)`nLeft Shift (Secondary Fire)`n`nPlayer Two - Arrow Keys`nRight Ctrl (Primary Fire)`nRight Shift (Secondary Fire)
 Gui, About:Show, AutoSize Center, JoyKey Mapping
-WinGetPos, PX, PY,,, SCG4WinUAE 1.3.34.5
+WinGetPos, PX, PY,,, SCG4WinUAE 1.3.5
 Winmove, JoyKey Mapping,, PX+(20*A_ScreenDPI/96), PY+(50*A_ScreenDPI/96)
 Return
 
@@ -646,7 +646,7 @@ Gui, XX:Font, s8 Bold, Verdana
 Gui, XX:Color, DDDDDD
 Gui, XX:Add, Text,, %Note%
 Gui, XX:Show,, Notice
-WinGetPos, PX, PY,,, SCG4WinUAE 1.3.34.5
+WinGetPos, PX, PY,,, SCG4WinUAE 1.3.5
 Winmove, Notice,, PX+(50*A_ScreenDPI/96), PY+(220*A_ScreenDPI/96)
 Sleep, 500
 Gui, XX:-Disabled
@@ -801,7 +801,7 @@ If (AGA20 = 1 || ECS30 = 1 || AGA40 = 1) {
 			}
 			If (Model = "CD32") {
 				FileAppend, fastmem_size=4`n, %File%
-				} 
+				}
 		}
 
 	FileAppend, bogomem_size=0`nfpu_strict=true`nwaiting_blits=automatic`n`n, %File%
@@ -843,7 +843,7 @@ If (Drv.1 != "" && Strlen(FD) > 0) {
 	Num := 0
 	for index, SW in Drv {
 			flvl = diskimage%Num%=%SW%`nfloppy%Num%=%SW%
-			If (A_Index < 3) {			
+			If (A_Index < 3) {
 				FileAppend, %flvl%`n, %File%
 			}
 			If (A_Index >= 3 && A_Index < 5) {
@@ -868,7 +868,7 @@ Else {
 If (HDrv.1 != "" && Strlen(HD) > 0) {
 	HNum := 0
 	for index, HW in HDrv {
-		If (A_Index < 30) {	
+		If (A_Index < 30) {
 			FileAppend, hardfile2=rw`,DH%HNum%:%HW%`,32`,1`,2`,512`,0`,`,uae%HNum%`n, %File%
 			HNum += 1
 		}
