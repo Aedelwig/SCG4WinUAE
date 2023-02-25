@@ -1,7 +1,7 @@
 ﻿;@Ahk2Exe-SetMainIcon Boing.ico
 ;@Ahk2Exe-SetDescription Swift Configuration Generator for WinUAE
 ;@Ahk2Exe-SetProductName SCG4WinUAE
-;@Ahk2Exe-SetVersion 1.3.34.5
+;@Ahk2Exe-SetVersion 1.3.5
 ;@Ahk2Exe-AddResource SCG4WinUAE.txt
 
 /*@Ahk2Exe-Keep
@@ -271,9 +271,9 @@ Gui, About:+owner1 -MaximizeBox -MinimizeBox
 Gui, Font, s8, Verdana
 Gui, +Disabled
 Gui, About:Add, Picture, ym+20 Icon1, %A_ScriptFullPath%
-Gui, About:Add, Link, ys ym+0, The Swift Configuration Generator for WinUAE`nis a companion program aimed to make life`neasier for the Amiga emulation scene.`n`nMore information can be found in the included`n<a href="SCG4WinUAE.txt">instructions</a> manual.`n`nWritten by Rodney Caruana (2022)`n`nSpecial Thanks to Toni Wilen, Bernd Schmidt,`nBrian King, Mathias Ortmann, Bernd Meyer`nand all <a href="http://www.winuae.com">WinUAE</a> contributors.
+Gui, About:Add, Link, ys ym+0, The Swift Configuration Generator for WinUAE`nis a companion program aimed to make life`neasier for the Amiga emulation scene.`n`nMore information can be found in the included`n<a href="SCG4WinUAE.txt">instructions</a> manual.`n`nWritten by Rodney Caruana (2022-23)`n`nSpecial Thanks to Toni Wilen, Bernd Schmidt,`nBrian King, Mathias Ortmann, Bernd Meyer`nand all <a href="http://www.winuae.com">WinUAE</a> contributors.
 Gui, About:Show, AutoSize Center, About SCG4WinUAE
-WinGetPos, PX, PY,,, SCG4WinUAE 1.3.34.5
+WinGetPos, PX, PY,,, SCG4WinUAE 1.3.5
 Winmove, About SCG4WinUAE,, PX-(60*A_ScreenDPI/96), PY+(105*A_ScreenDPI/96)
 Return
 
