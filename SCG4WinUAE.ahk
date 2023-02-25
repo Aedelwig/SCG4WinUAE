@@ -747,7 +747,7 @@ RegWrite, REG_SZ, HKEY_CURRENT_USER\Software\SCG4WinUAE, CPU, %CPU%
 RegWrite, REG_SZ, HKEY_CURRENT_USER\Software\SCG4WinUAE, Model, %Model%
 FileDelete, %File%
 
-FileAppend, -- File Generated using SCG4WinUAE --`n`n%Ctrl%input.autoswitch=0`n`ngfx_filter_autoscale=scale`ngfx_filter_keep_autoscale_aspect=1`ngfx_filter_bilinear=true`ngfx_flickerfixer=true`nwaiting_blits=automatic`n, %File%
+FileAppend, -- File Generated using SCG4WinUAE --`n`n%Ctrl%input.autoswitch=0`n`ngfx_filter_autoscale=scale`ngfx_filter_keep_autoscale_aspect=1`ngfx_filter_bilinear=true`ngfx_flickerfixer=true`n, %File%
 
 If (Win = 1) {
 	RegWrite, REG_SZ, HKEY_CURRENT_USER\Software\SCG4WinUAE, Mode, Win
@@ -804,7 +804,7 @@ If (AGA20 = 1 || ECS30 = 1 || AGA40 = 1) {
 				} 
 		}
 
-	FileAppend, bogomem_size=0`nfpu_strict=true`n`n, %File%
+	FileAppend, bogomem_size=0`nfpu_strict=true`nwaiting_blits=automatic`n`n, %File%
 
 	If (JIT = 0) {
 		RegWrite, REG_SZ, HKEY_CURRENT_USER\Software\SCG4WinUAE, JIT, 0
