@@ -1,7 +1,8 @@
 ;@Ahk2Exe-SetMainIcon Boing.ico
+;@Ahk2Exe-SetMainIcon Boing.ico
 ;@Ahk2Exe-SetDescription Swift Configuration Generator for WinUAE
 ;@Ahk2Exe-SetProductName SCG4WinUAE
-;@Ahk2Exe-SetVersion 1.3.5
+;@Ahk2Exe-SetVersion 1.3.7
 ;@Ahk2Exe-AddResource SCG4WinUAE.txt
 
 /*@Ahk2Exe-Keep
@@ -16,8 +17,11 @@ SetBatchLines 5ms
 ListLines Off
 
 SysGet, Area, MonitorWorkArea, 0
-Width := Floor(AreaBottom * 1.267605633802817)
+Width := Round(AreaBottom * 1.25)
+;For interger:- Factor := Round(AreaBottom * 1.25 / 320) | Width := 320 * Factor
 Offset := Floor((AreaRight - Width) / 2)
+;ARTest:= Width / AreaBottom
+;msgbox, Width %Width%`nHeight %AreaBottom%`nOffset %Offset%`n%ARTest%
 
 RegRead, WinUAE, HKEY_CURRENT_USER\Software\SCG4WinUAE, WinUAE
 RegRead, CPU, HKEY_CURRENT_USER\Software\SCG4WinUAE, CPU
@@ -65,7 +69,7 @@ Menu, EditMenu, Add, &Reset All Settings, Reset
 Menu, FileMenu, Add, &Launch WinUAE, WUAERUN
 Menu, FileMenu, Add, &Open Configurations Folder, Folder
 Menu, FileMenu, Add,
-Menu, FileMenu, Add, &Quit SCP4WinUAE, Quit
+Menu, FileMenu, Add, &Quit SCG4WinUAE, Quit
 Menu, MainMenu, Add, &File, :FileMenu
 Menu, MainMenu, Add, &Edit, :EditMenu
 Menu, MainMenu, Add, &Joystick, :JoyStickMenu
@@ -323,8 +327,8 @@ For index, Nx in Pth {
 		If (A_LoopFileName ~= "i)^winuae|^winuae64") {
 			WinUAE = %A_LoopFileFullPath%
 			XBRF = %A_LoopFileDir%
-			FileCreateDir, %XBRF%\Filtershaders\direct3d
-			FileInstall, 5xBR.fx, %XBRF%\Filtershaders\direct3d\5xBR.fx, 1
+			FileCreateDir, %XBRF%\Plugins\Filtershaders\direct3d
+			FileInstall, xBR-Level2-SmartRes.fx, %XBRF%\Plugins\Filtershaders\direct3d\xBR-Level2-SmartRes.fx, 1
 			RegRead, ConfPath, HKEY_CURRENT_USER\Software\SCG4WinUAE, ConfPath
 			RegRead, RelPath, HKEY_CURRENT_USER\SOFTWARE\Arabuusimiehet\WinUAE, RelativePaths
 			If (ConfPath = "") {
@@ -747,7 +751,7 @@ RegWrite, REG_SZ, HKEY_CURRENT_USER\Software\SCG4WinUAE, CPU, %CPU%
 RegWrite, REG_SZ, HKEY_CURRENT_USER\Software\SCG4WinUAE, Model, %Model%
 FileDelete, %File%
 
-FileAppend, -- File Generated using SCG4WinUAE --`n`n%Ctrl%input.autoswitch=0`n`ngfx_filter_autoscale=scale`ngfx_filter_keep_autoscale_aspect=1`ngfx_filter_bilinear=true`ngfx_flickerfixer=true`n, %File%
+FileAppend, -- File Generated using SCG4WinUAE --`n`n%Ctrl%input.autoswitch=0`n`ngfx_filter_autoscale=scale`ngfx_filter_keep_autoscale_aspect=1`ngfx_flickerfixer=true`ngfx_filter_aspect_ratio=-1:-1`n, %File%
 
 If (Win = 1) {
 	RegWrite, REG_SZ, HKEY_CURRENT_USER\Software\SCG4WinUAE, Mode, Win
@@ -755,25 +759,24 @@ If (Win = 1) {
 }
 	If (Full = 1) {
 	RegWrite, REG_SZ, HKEY_CURRENT_USER\Software\SCG4WinUAE, Mode, Full
-	FileAppend, gfx_fullscreen_amiga=true`ngfx_width_fullscreen=native`ngfx_height_fullscreen=native`ngfx_filter_aspect_ratio=-1:-1`n`n, %File%
+	FileAppend, gfx_fullscreen_amiga=fullwindow`ngfx_width_fullscreen=native`ngfx_height_fullscreen=native`n`n, %File%
 }
 
 If (2X = 1) {
 	RegWrite, REG_SZ, HKEY_CURRENT_USER\Software\SCG4WinUAE, 2X, 1
-	FileAppend, gfx_api=direct3d`ngfx_linemode=none`ngfx_lores=true`ngfx_filter=D3D:5xBR.fx`n`n, %File%
+	FileAppend, gfx_filter=D3D:xBR-Level2-SmartRes.fx`ngfx_filter_bilinear=true`n`n, %File%
 }
 Else {
 	RegWrite, REG_SZ, HKEY_CURRENT_USER\Software\SCG4WinUAE, 2X, 0
-	FileAppend, gfx_api=direct3d`ngfx_filter_pre=D3D:5xBR.fx`ngfx_filter_mode=2x`n`n, %File%
 }
 
 FileAppend, chipset=%CS%`nchipset_compatible=%Model%`n`n, %File%
 
 If (OCS00 = 1 || ECS10 = 1) {
 	If (ECS10 = 1) {
-		FileAppend, cpu_model=68010`n`n, %File%
+		FileAppend, cpu_model=68010`n`nchipmem_size=2`n, %File%
 	}
-	FileAppend, bogomem_size=0`nchipmem_size=2`nfastmem_size_k=512`n`ncycle_exact=true`ncpu_multiplier=4`n`n, %File%
+	FileAppend, bogomem_size=0`nfastmem_size_k=512`n`ncpu_multiplier=4`n`n, %File%
 }
 
 If (AGA20 = 1 || ECS30 = 1 || AGA40 = 1) {
@@ -808,7 +811,7 @@ If (AGA20 = 1 || ECS30 = 1 || AGA40 = 1) {
 
 	If (JIT = 0) {
 		RegWrite, REG_SZ, HKEY_CURRENT_USER\Software\SCG4WinUAE, JIT, 0
-		FileAppend, cycle_exact=true`ncpu_multiplier=8`n`n, %File%
+		FileAppend, cpu_multiplier=8`n`n, %File%
 		If (ECS30 = 1) {
 			FileAppend, mmu_model=68030`n, %File%
 			}
@@ -821,7 +824,7 @@ If (AGA20 = 1 || ECS30 = 1 || AGA40 = 1) {
 		}
 	If (JIT = 1) {
 			RegWrite, REG_SZ, HKEY_CURRENT_USER\Software\SCG4WinUAE, JIT, 1
-			FileAppend, cpu_speed=max`ncpu_24bit_addressing=false`ncachesize=16384`n`n, %File%
+			FileAppend, cpu_speed=max`ncycle_exact=false`ncpu_24bit_addressing=false`ncachesize=16384`n`n, %File%
 		}
 }
 
