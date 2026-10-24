@@ -1,8 +1,7 @@
-;@Ahk2Exe-SetMainIcon Boing.ico
-;@Ahk2Exe-SetMainIcon Boing.ico
+﻿;@Ahk2Exe-SetMainIcon Boing.ico
 ;@Ahk2Exe-SetDescription Swift Configuration Generator for WinUAE
 ;@Ahk2Exe-SetProductName SCG4WinUAE
-;@Ahk2Exe-SetVersion 1.3.7
+;@Ahk2Exe-SetVersion 1.3.8
 ;@Ahk2Exe-AddResource SCG4WinUAE.txt
 
 /*@Ahk2Exe-Keep
@@ -163,31 +162,37 @@ BGen_TT =
 Gui, Add, Checkbox, yp+27 vRun, Open with WinUAE
 Run_TT := "Enable this to run your generated configuration on WinUAE.`n`nLeaving this Disabled means the file will be saved in`nthe 'configuration' folder for later use.`n`nPress 'F12' during emulation to open the WinUAE options."
 OnMessage(0x0200, "WM_MOUSEMOVE")
-Gui, Show, w226 h345 Center, SCG4WinUAE 1.3.5
+Gui, Show, w226 h345 Center, SCG4WinUAE 1.3.8
 Settimer, GUI
 Return
 
 GUI:
+
 If (KS != "") {
-	Splitpath, KS,,,, ROMN
-	ROMN:= StrSplit(ROMN, "` ",, 4)
-	ROMN.Delete(4)
-	If (ROMN.1 ~= "i)Kick[1-3]|amiga-os-") || (KS ~= "i)Bootstrap|Kick.rom|Kick.zip|Kick.7z") {
-		ROMN = Kickstart Loaded
-		}
-	Else If (ROMN.1 ~= "i)^Kick$") && (ROMN.2 ~= "[1-3]") {
-		ROMN = Kickstart Loaded
-		}
-	Else If (ROMN.1 ~= "i)^Kickstart$") && (ROMN.2 ~= "[1-3]") && (ROMN.3 ~= "[0-9]") {
-		ROMN := "Kickstart " . ROMN.2 . " " . ROMN.3
-		}
-	Else If (ROMN.1 ~= "i)^Kickstart$") && (ROMN.2 ~= "[1-3]") {
-		ROMN := "Kickstart " . ROMN.2
-		}
-	Else {
-		ROMN = Unrecognized ROM
+	Splitpath, KS, KSFile, KSDir, KSExt, ROMn
+	If (KSExt = "rom" || "A500" || "A600" || "A1200" || "A4000" || "CDTV" || "CD32") {
+		ROMn := KickstartMD5(KS)
 	}
-		GuiControl, Text, Button13, %ROMN%
+	Else {
+		ROMn:= StrSplit(ROMn, "` ",, 4)
+		ROMn.Delete(4)
+		If (ROMn.1 ~= "i)Kick[1-3]|amiga-os-") || (KS ~= "i)Bootstrap|Kick.zip|Kick.7z") {
+			ROMn = Kickstart Loaded
+		}
+		Else If (ROMn.1 ~= "i)^Kick$") && (ROMn.2 ~= "[1-3]") {
+			ROMn = Kickstart Loaded
+		}
+		Else If (ROMn.1 ~= "i)^Kickstart$") && (ROMn.2 ~= "[1-3]") && (ROMn.3 ~= "[0-9]") {
+			ROMn := "Kickstart " . ROMn.2 . " " . ROMn.3
+		}
+		Else If (ROMn.1 ~= "i)^Kickstart$") && (ROMn.2 ~= "[1-3]") {
+			ROMn := "Kickstart " . ROMn.2
+		}
+		Else {
+			ROMn = Unrecognized ROM
+		}
+	}
+		GuiControl, Text, Button13, %ROMn%
 		GuiControl, Enable, Button14
 }
 Else {
@@ -275,9 +280,9 @@ Gui, About:+owner1 -MaximizeBox -MinimizeBox
 Gui, Font, s8, Verdana
 Gui, +Disabled
 Gui, About:Add, Picture, ym+20 Icon1, %A_ScriptFullPath%
-Gui, About:Add, Link, ys ym+0, The Swift Configuration Generator for WinUAE`nis a companion program aimed to make life`neasier for the Amiga emulation scene.`n`nMore information can be found in the included`n<a href="SCG4WinUAE.txt">instructions</a> manual.`n`nWritten by Rodney Caruana (2022-23)`n`nSpecial Thanks to Toni Wilen, Bernd Schmidt,`nBrian King, Mathias Ortmann, Bernd Meyer`nand all <a href="http://www.winuae.com">WinUAE</a> contributors.
+Gui, About:Add, Link, ys ym+0, The Swift Configuration Generator for WinUAE`nis a companion program aimed to make life`neasier for the Amiga emulation scene.`n`nMore information can be found in the included`n<a href="SCG4WinUAE.txt">instructions</a> manual.`n`nWritten by Rodney Caruana (2022-26)`n`nSpecial Thanks to Toni Wilen, Bernd Schmidt,`nBrian King, Mathias Ortmann, Bernd Meyer`nand all <a href="http://www.winuae.com">WinUAE</a> contributors.
 Gui, About:Show, AutoSize Center, About SCG4WinUAE
-WinGetPos, PX, PY,,, SCG4WinUAE 1.3.5
+WinGetPos, PX, PY,,, SCG4WinUAE 1.3.8
 Winmove, About SCG4WinUAE,, PX-(60*A_ScreenDPI/96), PY+(105*A_ScreenDPI/96)
 Return
 
@@ -453,7 +458,7 @@ Gui, Guru:Font, s8 Bold, Verdana
 Gui, Guru:Add, Button, xm+70 vMeh gMeh, Donkey!
 Meh :=
 Gui, Guru:Show, w226, Guru
-WinGetPos, PX, PY,,, SCG4WinUAE 1.3.5
+WinGetPos, PX, PY,,, SCG4WinUAE 1.3.8
 Winmove, Guru,, PX, PY+(220*A_ScreenDPI/96)
 Return
 
@@ -473,7 +478,7 @@ Gui, Ext:Font, s8 Bold, Verdana
 Gui, Ext:Add, Button, w40 gYes xm+55, Yeah
 Gui, Ext:Add, Button, w40 xp+50 gNo, Nope
 Gui, Ext:Show, w226, Extend
-WinGetPos, PX, PY,,, SCG4WinUAE 1.3.5
+WinGetPos, PX, PY,,, SCG4WinUAE 1.3.8
 Winmove, Extend,, PX, PY+(220*A_ScreenDPI/96)
 Return
 
@@ -635,7 +640,7 @@ Gui, Font, s8, Verdana
 Gui, +Disabled
 Gui, About:Add, Text,, Disabled:`nNo Joystick Attached`n`nEnabled (One Player) -`nArrow keys, WINkey (Autofire)`n`nStandard:`nLeft or Right Ctrl (Primary Fire)`nLeft or Right Alt (Secondary Fire)`n`nCDTV/CD32:`nZ (Red/Primary Fire), A (Green)`nX (Blue/Secondary Fire), S (Yellow)`n`nTwo Player:`nPlayer One - WSAD`nLeft Ctrl (Primary Fire)`nLeft Shift (Secondary Fire)`n`nPlayer Two - Arrow Keys`nRight Ctrl (Primary Fire)`nRight Shift (Secondary Fire)
 Gui, About:Show, AutoSize Center, JoyKey Mapping
-WinGetPos, PX, PY,,, SCG4WinUAE 1.3.5
+WinGetPos, PX, PY,,, SCG4WinUAE 1.3.8
 Winmove, JoyKey Mapping,, PX+(20*A_ScreenDPI/96), PY+(50*A_ScreenDPI/96)
 Return
 
@@ -650,7 +655,7 @@ Gui, XX:Font, s8 Bold, Verdana
 Gui, XX:Color, DDDDDD
 Gui, XX:Add, Text,, %Note%
 Gui, XX:Show,, Notice
-WinGetPos, PX, PY,,, SCG4WinUAE 1.3.5
+WinGetPos, PX, PY,,, SCG4WinUAE 1.3.8
 Winmove, Notice,, PX+(50*A_ScreenDPI/96), PY+(220*A_ScreenDPI/96)
 Sleep, 500
 Gui, XX:-Disabled
@@ -899,3 +904,73 @@ Else {
 
 File =
 Return
+
+KickstartMD5(FilePath) {
+    ; Calculate MD5 using Windows CryptoAPI directly (no external program).
+    hProv := 0
+    hHash := 0
+    Hash := ""
+
+    if !DllCall("advapi32\CryptAcquireContext", "PtrP", hProv, "Ptr", 0, "Ptr", 0, "UInt", 1, "UInt", 0xF0000000)
+        return "Unrecognized ROM"
+
+    if !DllCall("advapi32\CryptCreateHash", "Ptr", hProv, "UInt", 0x8003, "Ptr", 0, "UInt", 0, "PtrP", hHash) {
+        DllCall("advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
+        return "Unrecognized ROM"
+    }
+
+    FileObj := FileOpen(FilePath, "r")
+    if !IsObject(FileObj) {
+        DllCall("advapi32\CryptDestroyHash", "Ptr", hHash)
+        DllCall("advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
+        return "Unrecognized ROM"
+    }
+
+    VarSetCapacity(Buffer, 65536, 0)
+    while (BytesRead := FileObj.RawRead(Buffer, 65536)) {
+        if !DllCall("advapi32\CryptHashData", "Ptr", hHash, "Ptr", &Buffer, "UInt", BytesRead, "UInt", 0) {
+            FileObj.Close()
+            DllCall("advapi32\CryptDestroyHash", "Ptr", hHash)
+            DllCall("advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
+            return "Unrecognized ROM"
+        }
+    }
+    FileObj.Close()
+
+    VarSetCapacity(HashBytes, 16, 0)
+    HashSize := 16
+    if DllCall("advapi32\CryptGetHashParam", "Ptr", hHash, "UInt", 2, "Ptr", &HashBytes, "UIntP", HashSize, "UInt", 0) {
+        Loop, 16
+            Hash .= Format("{:02x}", NumGet(HashBytes, A_Index - 1, "UChar"))
+    }
+
+    DllCall("advapi32\CryptDestroyHash", "Ptr", hHash)
+    DllCall("advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
+
+    if (Hash = "85ad74194e87c08904327de1a9443b7a")
+        return "Kickstart v1.2 r33.180"
+    if (Hash = "10043d838383a37f59d5718ee43c08b8" || Hash = "82a21c1890cae844b3df741f2762d48d")
+        return "Kickstart v1.3 r34.5"
+    if (Hash = "04a259c11dd88b8e0b62d3e42ea2d6ff" || Hash = "dc10d7bdd1b6f450773dfb558477c230")
+        return "Kickstart v2.04 r37.175"
+    if (Hash = "8361b17a1451f280b18204b8ea16a858")
+        return "Kickstart v2.05 r37.299"
+    if (Hash = "465646c9b6729f77eea5314d1f057951")
+        return "Kickstart v2.05 r37.350"
+    if (Hash = "b7cc148386aa631136f510cd29e42fc3" || Hash = "c3ed138612140e909d43ef19e4f2e82f")
+        return "Kickstart v3.0 r39.106"
+    if (Hash = "5f8924d013dd57a89cf349f4cdedc6b1")
+        return "Kickstart v3.1 r40.60"
+    if (Hash = "e40a5dfb3d017ba8779faba30cbd1c8e")
+        return "Kickstart v3.1 r40.63"
+    if (Hash = "646773759326fbac3b2311fd8c8793ee" || Hash = "413590e50098a056cfec418d3df0212d")
+        return "Kickstart v3.1 r40.68"
+    if (Hash = "9bdedde6a4f33555b4a270c8ca53297d" || Hash = "fc24ae0ed739268841a1eb757ee9f242")
+        return "Kickstart v3.1 r40.70"
+    if (Hash = "d289ae65979bb9db946b5399ba64e4ff")
+        return "Kickstart v3.1.4 r46.143"
+    if (Hash = "5d2ef1dfa7c88b2eb5963b65a58ddf88" || Hash = "41f9d6ba59021a8d0f11caebcc2c1392" || Hash = "b786f1d2df0f038d17ba9fbdf4b75a40" || Hash = "8d5e0a0d923ebffbd3ef00d23a492167" || Hash = "8085d5843c0048e9d3d3ef474f07a752")
+        return "Kickstart v3.2.2 r47.111"
+
+    return "Unrecognized ROM"
+}
